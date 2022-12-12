@@ -1,31 +1,32 @@
-<template>
-  <input v-model="localValue"
-         ref="input"
-         @keydown.enter="emit"
-         @blur="emit"
-         @keydown.esc="cancel"
-         @click="$refs.input.select()"
-         type="text"/>
-</template>
+<script setup>
+import { ref, reactive } from 'vue'
 
-<script>
-export default {
-  name: 'ReusableInput',
-  props: ['value'],
-  data () {
-    return {
-      localValue: this.value
-    }
-  },
-  methods: {
-    emit () {
-      this.$emit('input', this.localValue)
-      this.$refs.input.blur()
-    },
-    cancel () {
-      this.localValue = this.value
-      this.$refs.input.blur()
-    }
-  }
+const props = defineProps(['modelValue'])
+const emit = defineEmits(['update:modelValue'])
+let input = ref(null)
+const state = reactive({
+  localValue: props.modelValue
+})
+
+const onUpdate = () => {
+  emit('update:modelValue', state.localValue)
+  input.value.blur()
+}
+
+const cancel = () => {
+  state.localValue = props.modelValue
+  input.value.blur()
 }
 </script>
+
+<template>
+  <input
+    v-model="state.localValue"
+    ref="input"
+    @keydown.enter="onUpdate"
+    @blur="onUpdate"
+    @keydown.esc="cancel"
+    @click="$refs.input.select()"
+    type="text"
+  />
+</template>

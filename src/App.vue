@@ -1,25 +1,18 @@
+<script setup>
+import ReusableInput from './components/ReusableInput.vue'
+import {reactive} from 'vue'
+
+const state = reactive({
+  aValue: 'starting value'
+})
+</script>
+
 <template>
   <div id="app">
-    {{aValue}}<br>
-    <reusable-input v-model="aValue"/>
+    {{state.aValue}}<br>
+    <reusable-input v-model="state.aValue"/>
   </div>
 </template>
-
-<script>
-import ReusableInput from './components/ReusableInput'
-
-export default {
-  name: 'App',
-  components: {
-    ReusableInput
-  },
-  data () {
-    return {
-      aValue: ''
-    }
-  }
-}
-</script>
 
 <style>
 #app {
